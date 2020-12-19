@@ -1,0 +1,40 @@
+extends ../layouts/default
+
+block main
+    h1= title
+
+block content
+  - var action = '/pipelines'
+  - action += pipeline.isNew? '' : '/' + pipeline.id
+
+  .row
+    .col-md-6
+      form(method="post", action=action, role="form")
+
+        input(type="hidden", name="_csrf", value=csrf_token)
+
+        - if (!pipeline.isNew)
+          input(type="hidden", name="_method", value="PUT")
+          input(type="hidden", name="_pid", value=pipeline._id)
+          input(type="hidden", name="_tasks", value=pipeline.tasks.map(task => task._id))
+          input(type="hidden", name="_all_tasks", value=tasks.map(task => task._id))
+
+        .form-group
+          h2 Name
+          input.form-control#name(type='text', name="name", value=pipeline.name, placeholder='Enter the name')
+
+        div.tasks-in-pipeline(style="margin-bottom:16px")
+
+        button#btn-save.btn.btn-primary(type='button') Save
+        | &nbsp;
+        a.btn.btn-link(href='/pipelines', title="cancel") Cancel
+
+    .col-md-6
+        h2= "All tasks"
+        ul(class="list-group")
+          each val in tasks
+            li(class="list-group-item")= val.name
+              div.text-left= "Average time: " + val.averageTime + "s"
+              div.text-right
+                input(type="hidden", name="_id", value=val._id)
+                button.btn.btn-primary(type='button').btn-add Add

@@ -1,0 +1,22 @@
+nav.navbar.navbar-expand-md.navbar-dark.fixed-top.bg-dark
+  a.navbar-brand(href='/') Cyntegrity Demo
+  button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarCollapse' aria-controls='navbarCollapse' aria-expanded='false' aria-label='Toggle navigation')
+    span.navbar-toggler-icon
+  #navbarCollapse.collapse.navbar-collapse
+    ul.navbar-nav.mr-auto
+      li(class=isActive('/tasks') ? 'active nav-item': 'nav-item')
+        a.nav-link(href="/tasks", title="tasks") Tasks
+      li(class=isActive('/tasks/new') ? 'active nav-item': 'nav-item')
+        a.nav-link(href="/tasks/new", title="new task") New Task
+      li(class=isActive('/pipelines') ? 'active nav-item': 'nav-item')
+        a.nav-link(href="/pipelines", title="pipelines") Pipelines
+      li(class=isActive('/pipelines/new') ? 'active nav-item': 'nav-item')
+        a.nav-link(href="/pipelines/new", title="new pipeline") New Pipeline
+      - if (req.isAuthenticated())
+        li.nav-item(class=isActive(`/users/${req.user.id}`) && 'active')
+          a.nav-link(href="/users/"+req.user.id, title="Profile") Profile
+        li.nav-item
+          a.nav-link(href="/logout", title="logout") Logout
+      - else
+        li(class=isActive('/login') ? 'active nav-item': 'nav-item')
+          a.nav-link(href="/login", title="Login") Login

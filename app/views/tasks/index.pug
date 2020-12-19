@@ -1,0 +1,27 @@
+extends ../layouts/default
+
+block main
+  h1= title
+
+block content
+  - if (tasks.length)
+    each task, index in tasks
+      div(class=`py-4 ${index && 'border-top'}`)
+        include task
+
+    - if (pages > 1)
+      ul.pagination
+        - var arr = paginate({ currentPage: page, totalPages: pages })
+        each item in arr
+          li.page-item(class=item.isActive && item.type === 'PAGE' && 'active')
+            a.page-link(href=`?page=${item.value}`)
+              case item.type
+                when 'FIRST_PAGE_LINK': | First
+                when 'PREVIOUS_PAGE_LINK': | Previous
+                when 'PAGE': =item.value
+                when 'ELLIPSIS': | ...
+                when 'NEXT_PAGE_LINK': | Next
+                when 'LAST_PAGE_LINK': | Last
+  - else
+    h4.text-muted No tasks.&nbsp;
+      a(href="/tasks/new") create one

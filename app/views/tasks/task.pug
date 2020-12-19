@@ -1,0 +1,13 @@
+task.task
+  h3
+    a(href='/tasks/'+task._id, title=task.name) #{task.name.slice(0, 140)}
+
+  span.text-muted= 'Average time: ' + task.averageTime
+
+  - if (task.user)
+    | &nbsp; - &nbsp;
+    span Author &nbsp;
+
+    - var name = task.user.name ? task.user.name : task.user.username
+
+    a(href="/users/"+task.user._id)= name

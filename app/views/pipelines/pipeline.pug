@@ -1,0 +1,13 @@
+pipeline.pipeline
+  h3
+    a(href='/pipelines/'+pipeline._id, title=pipeline.name) #{pipeline.name.slice(0, 140)}
+
+  span.text-muted= formatDate(pipeline.createdAt)
+
+  - if (pipeline.user)
+    | &nbsp; - &nbsp;
+    span Author &nbsp;
+
+    - var name = pipeline.user.name ? pipeline.user.name : pipeline.user.username
+
+    a(href="/users/"+pipeline.user._id)= name

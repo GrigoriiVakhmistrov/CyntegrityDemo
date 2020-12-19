@@ -1,0 +1,30 @@
+extends ../layouts/default
+
+block main
+  h1= title
+
+block content
+  - var action = '/tasks'
+  - action += task.isNew? '' : '/' + task.id
+
+  .row
+    .col-md-8
+      form(method="post", action=action, role="form")
+
+        input(type="hidden", name="_csrf", value=csrf_token)
+
+        - if (!task.isNew)
+          input(type="hidden", name="_method", value="PUT")
+
+        .form-group
+          label(for='name') Name
+          input.form-control#name(type='text', name="name", value=task.name, placeholder='Enter the name')
+
+        .form-group
+          label(for='averageTime') AverageTime
+          input.form-control#averageTime(type='number', name="averageTime", value=task.averageTime, placeholder='Enter the average time')
+
+        
+        button.btn.btn-primary(type='submit') Save
+        | &nbsp;
+        a.btn.btn-link(href='/tasks', title="cancel") Cancel

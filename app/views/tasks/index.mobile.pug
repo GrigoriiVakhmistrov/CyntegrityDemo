@@ -1,0 +1,17 @@
+extends ../layouts/default
+
+block main
+  h1= title
+
+block content
+  - if (tasks.length)
+    each task, index in tasks
+      div(class=`py-4 ${index && 'border-top'}`)
+        include task
+
+    - if (pages > 1)
+      ul.pagination
+        != createPagination(pages, page, 'page-item', 'page-link')
+  - else
+    h4.text-muted No tasks.&nbsp;
+      a(href="/tasks/new") create one

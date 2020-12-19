@@ -1,0 +1,30 @@
+extends ../layouts/default
+
+block main
+  h1= pipeline.name.slice(0, 400)
+
+block content
+  .row
+    .col-md-8
+      - if (pipeline.user)
+        - var name = pipeline.user.name ? pipeline.user.name : pipeline.user.username
+        p Author :&nbsp;
+          a(href="/users/"+pipeline.user._id)= name
+
+      p Tasks :&nbsp;
+        each val, i in pipeline.tasks
+          if i < pipeline.tasks.length - 1
+            span= val.name + ' -> '
+          else
+            span= val.name
+
+  form(action="/pipelines/"+pipeline.id, method="post", onsubmit="return confirm('Are you sure?')")
+    input(type='hidden', name='_csrf', value=csrf_token)
+    a.btn.btn-outline-primary(href='/pipelines/'+pipeline._id+'/edit', title="edit") Edit
+    | &nbsp;
+    input(type="hidden", name="_method", value="DELETE")
+    button.btn.btn-link.text-danger(type="submit") Delete
+
+  br
+  button#btn-calculate.btn.btn-success(type='button') Calculate Average Time
+  button#btn-run.btn.btn-success(type='button') Run

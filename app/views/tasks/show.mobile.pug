@@ -1,0 +1,22 @@
+extends ../layouts/default
+
+block main
+  h1= task.name.slice(0, 400)
+
+block content
+  .row
+    .col-md-8
+      p=task.body.slice(0, 1000)
+      - if (task.user)
+        - var name = task.user.name ? task.user.name : task.user.username
+        p Author :&nbsp;
+          a(href="/users/"+task.user._id)= name
+
+      p.text-muted= formatDate(task.createdAt, "%b %d, %Y at %I:%M %p")
+
+  form(action="/tasks/"+task.id, method="post", onsubmit="return confirm('Are you sure?')")
+    input(type='hidden', name='_csrf', value=csrf_token)
+    a.btn.btn-outline-primary(href='/tasks/'+task._id+'/edit', title="edit") Edit
+    | &nbsp;
+    input(type="hidden", name="_method", value="DELETE")
+    button.btn.btn-link.text-danger(type="submit") Delete
